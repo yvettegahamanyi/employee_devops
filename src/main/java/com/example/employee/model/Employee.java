@@ -34,6 +34,14 @@ public class Employee {
     @Column(name = "password")
     private String password;
 
+    public Employee(String fullNames, String email, String phoneNumber, String location, String password) {
+        this.fullNames = fullNames;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.location = location;
+        this.password = password;
+    }
+
     public Employee(UUID id, String fullNames, String email, String phoneNumber, String location, String password) {
         this.id = id;
         this.fullNames = fullNames;
@@ -41,5 +49,24 @@ public class Employee {
         this.phoneNumber = phoneNumber;
         this.location = location;
         this.password = password;
+    }
+
+    public Employee() {
+
+    }
+
+    public Employee(String fullNames, String email, String phoneNumber, String location) {
+        this.fullNames = fullNames;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.location = location;
+    }
+
+    public Employee(UUID id, String fullNames, String email, String phoneNumber, String location) {
+        this.id = id;
+        this.fullNames = fullNames;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.location = location;
     }
 }
