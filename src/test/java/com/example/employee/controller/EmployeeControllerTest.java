@@ -89,47 +89,49 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    public void registerEmployee_Success() throws Exception {
-        Employee employee = new Employee(UUID.fromString("b88c06c3-ae03-4deb-8724-9f74c51e0737"),"uwera koko","uwera@gmail.com","0788112234","Kigali","uwera");
-        RegisterEmployee employeeDto = new RegisterEmployee("uwera koko","uwera@gmail.com","0788112234","Kigali","uwera");
-
-        when(employeeServiceMock.createEmployee(employeeDto)).thenReturn(employee);
-
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .post("/add-employee")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"fullNames\":\"uwera koko\",\"email\":\"uwera@gmail.com\",\"phoneNumber\":\"0788112234\",\"location\":\"Kigali\",\"password\":\"uwera\"}");
-
-        MvcResult result = mockMvc
-                .perform(request)
-                .andExpect(status().isCreated())
-                .andExpect(content().json("{\"fullNames\":\"uwera koko\",\"email\":\"uwera@gmail.com\",\"phoneNumber\":\"0788112234\",\"location\":\"Kigali\",\"password\":\"uwera\"}"))
-                .andReturn();
-    }
-
-    @Test
-    public void updateEmployee_failed() throws Exception {
-        Employee employee = new Employee(UUID.fromString("b88c06c3-ae03-4deb-8724-9f74c51e0737"),"uwera koko","uwera@gmail.com","0788112234","Kigali","uwera");
+    public void updateEmployee_success() throws Exception {
+        Employee employee = new Employee(UUID.fromString("b88c06c3-ae03-4deb-8724-9f74c51e0737"),"uwera koko","gy@gmail.com","0788112234","Kigali","uwera");
         RegisterEmployee employeeDto = new RegisterEmployee("uwera koko","gy@gmail.com","0788112234","Kigali","uwera");
 
 
         when(employeeServiceMock.updateEmployee(employee.getId(), employeeDto)).thenReturn(employee);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .put("/update-apartment?id=16e1f6fb-fae5-4dd2-9b15-622914827bdc")
+                .put("/update-employee/b88c06c3-ae03-4deb-8724-9f74c51e0737")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"Isange\",\"location\":\"Nyagatare\",\"owner\":\"Stanley\",\"price\":150}");
+                .content("{\"fullNames\":\"uwera koko\",\"email\":\"gy@gmail.com\",\"phoneNumber\":\"0788112234\",\"location\":\"Kigali\",\"password\":\"uwera\"}");
 
         MvcResult result = mockMvc
                 .perform(request)
-                .andExpect(status().isCreated())
-                .andExpect(content().json("{\"name\":\"Isange\",\"location\":\"Nyagatare\",\"owner\":\"Stanley\",\"price\":130}"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\"fullNames\":\"uwera koko\",\"email\":\"gy@gmail.com\",\"phoneNumber\":\"0788112234\",\"location\":\"Kigali\",\"password\":\"uwera\"}"))
                 .andReturn();
     }
 
     @Test
-    public void deleteApartment_Success() throws Exception {
+    public void updateEmployee_notFound() throws Exception {
+        Employee employee = new Employee(UUID.fromString("b88c06c3-ae03-4deb-8724-9f74c51e0737"),"uwera koko","gy@gmail.com","0788112234","Kigali","uwera");
+        RegisterEmployee employeeDto = new RegisterEmployee("uwera koko","gy@gmail.com","0788112234","Kigali","uwera");
+
+
+        when(employeeServiceMock.updateEmployee(employee.getId(), employeeDto)).thenReturn(employee);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .put("/update-employee/b88c06c3-ae03-4deb-8724-9f74c51e8737")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content("{\"fullNames\":\"uwera koko\",\"email\":\"gy@gmail.com\",\"phoneNumber\":\"0788112234\",\"location\":\"Kigali\",\"password\":\"uwera\"}");
+
+        MvcResult result = mockMvc
+                .perform(request)
+                .andExpect(status().isNotFound())
+                .andExpect(content().json("{\"status\":false,\"message\":\"Employee not found\"}"))
+                .andReturn();
+    }
+
+    @Test
+    public void deleteEmployee_Success() throws Exception {
         Employee employee = new Employee(UUID.fromString("b88c06c3-ae03-4deb-8724-9f74c51e0737"),"uwera koko","uwera@gmail.com","0788112234","Kigali","uwera");
 
         when(employeeServiceMock.deleteEmployee(employee.getId())).thenReturn(employee);

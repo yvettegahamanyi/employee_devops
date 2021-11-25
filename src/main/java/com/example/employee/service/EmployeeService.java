@@ -46,10 +46,7 @@ public class EmployeeService {
 
     public Employee deleteEmployee(UUID id){
        Optional<Employee> foundEmployee = employeeRepository.findById(id);
-
-
         if(foundEmployee!= null){
-
             employeeRepository.deleteById(foundEmployee.get().getId());
             return foundEmployee.get();
         }

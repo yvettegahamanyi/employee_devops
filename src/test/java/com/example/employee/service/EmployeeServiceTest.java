@@ -10,14 +10,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmployeeServiceTest {
@@ -41,6 +41,12 @@ public class EmployeeServiceTest {
         assertEquals("kalisa@gmail.com",employeeService.getById(UUID.fromString("bc6bd171-790d-4f67-8943-a9f57ff47b2d")).getEmail());
     }
 
+    @Test(expected = RuntimeException.class)
+    public void getOnebyid_notFound(){
+        doThrow(new RuntimeException()).when(employeeRepositoryMock).getOne(UUID.fromString("bc6bd171-790d-4f07-8943-a9f57ff47b2d"));
+        employeeService.getById(UUID.fromString("bc6bd171-790d-4f07-8943-a9f57ff47b2d"));
+    }
+
     @Test
     public  void createEmployee(){
         RegisterEmployee dto=new RegisterEmployee("kalisa bella","kalisa@gmail.com","0788112233","Kigali","kalisa");
@@ -55,13 +61,20 @@ public class EmployeeServiceTest {
         RegisterEmployee dto=new RegisterEmployee("kalisa bella","yg@gmail.com","0788112233","Kigali","kalisa");
         Employee employee=new Employee(UUID.fromString("bc6bd171-790d-4f67-8943-a9f57ff47b2d"),"kalisa bella","kalisa@gmail.com","0788112233","Kigali","kalisa");
         Employee updatedEmployee=new Employee(UUID.fromString("bc6bd171-790d-4f67-8943-a9f57ff47b2d"),"kalisa bella","yg@gmail.com","0788112233","Kigali","kalisa");
+//        UUID userId = UUID.fromString("bc6bd171-790d-4f67-8943-a9f57ff47b2d");
 
         when(employeeRepositoryMock.getById(employee.getId())).thenReturn(employee);
-        when(employeeRepositoryMock.save(employee)).thenReturn(updatedEmployee);// this is not the correct way to do this but bellow is
-//        when(employeeRepositoryMock.save(updatedEmployee)).thenReturn(updatedEmployee);
+        when(employeeRepositoryMock.save(updatedEmployee)).thenReturn(updatedEmployee);
 
 
         assertEquals("yg@gmail.com",employeeService.updateEmployee(employee.getId(), dto).getEmail());
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void updateEmployee_notfound(){
+        doThrow(new RuntimeException()).when(employeeRepositoryMock).getOne(UUID.fromString("bc6bd171-790d-4f07-8943-a9f57ff47b2d"));
+        RegisterEmployee dto = new RegisterEmployee("kalisa bella","yg@gmail.com","0788112233","Kigali","kalisa");
+        employeeService.updateEmployee(UUID.fromString("bc6bd171-790d-4f07-8943-a9f57ff47b2d"),dto);
     }
 
     @Test
@@ -71,18 +84,4 @@ public class EmployeeServiceTest {
         employeeService.deleteEmployee(employee.getId());
         verify(employeeRepositoryMock).deleteById(employee.getId());
     }
-
-
-//    @Test(expected = EntityNotFoundException.class)
-//    public void testGetCustomer_notFound(){
-//        doThrow(new EntityNotFoundException()).when(customerRepository).getOne(1L);
-//        customerService.getCustomer(1L);
-//    }
-
-//    @Test(expected = EntityNotFoundException.class)
-//    public void testUpdateCustomer_notfound(){
-//        doThrow(new EntityNotFoundException()).when(customerRepository).getOne(1L);
-//        Customer input = new Customer(1L, "anjali");
-//        customerService.updateCustomer(1L,input);
-//    }
 }

@@ -19,13 +19,11 @@ public class EmployeeController {
 
     @GetMapping("/all-employee")
     public List<Employee> getAll() {
-
         return employeeService.getAll();
     }
 
     @GetMapping("/employee/{id}")
     public ResponseEntity<?> getById(@PathVariable(name = "id") UUID id) {
-
         Employee employee = employeeService.getById(id);
         if (employee != null) {
             return ResponseEntity.ok(employee);
@@ -44,8 +42,8 @@ public class EmployeeController {
 //        return employeeService.createEmployee(employee);
     }
 
-    @PutMapping("/update-employee")
-    public ResponseEntity<?> updateEmployee(@RequestBody RegisterEmployee employee, @RequestParam UUID id){
+    @PutMapping("/update-employee/{id}")
+    public ResponseEntity<?> updateEmployee(@RequestBody RegisterEmployee employee, @PathVariable(name = "id") UUID id){
         Employee updatedEmployee = employeeService.updateEmployee(id,employee);
         if (updatedEmployee != null) {
             return ResponseEntity.status(HttpStatus.OK).body(employee);
