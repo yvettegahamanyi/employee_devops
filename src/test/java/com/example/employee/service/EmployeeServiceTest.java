@@ -60,11 +60,9 @@ public class EmployeeServiceTest {
     public void updateEmployee(){
         RegisterEmployee dto=new RegisterEmployee("kalisa bella","yg@gmail.com","0788112233","Kigali","kalisa");
         Employee employee=new Employee(UUID.fromString("bc6bd171-790d-4f67-8943-a9f57ff47b2d"),"kalisa bella","kalisa@gmail.com","0788112233","Kigali","kalisa");
-        Employee updatedEmployee=new Employee(UUID.fromString("bc6bd171-790d-4f67-8943-a9f57ff47b2d"),"kalisa bella","yg@gmail.com","0788112233","Kigali","kalisa");
-//        UUID userId = UUID.fromString("bc6bd171-790d-4f67-8943-a9f57ff47b2d");
 
         when(employeeRepositoryMock.getById(employee.getId())).thenReturn(employee);
-        when(employeeRepositoryMock.save(updatedEmployee)).thenReturn(updatedEmployee);
+        when(employeeRepositoryMock.save(employee)).thenReturn(employee);
 
 
         assertEquals("yg@gmail.com",employeeService.updateEmployee(employee.getId(), dto).getEmail());
