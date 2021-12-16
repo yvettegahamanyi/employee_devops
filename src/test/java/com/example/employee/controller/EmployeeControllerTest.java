@@ -49,7 +49,8 @@ public class EmployeeControllerTest {
                 .perform(request)
                 .andExpect(status().isOk())
                 .andExpect(content().json("[" +
-                        "{\"id\":\"b88c06c3-ae03-4deb-8724-9f74c51e0737\",\"fullNames\":\"uwera koko\",\"email\":\"uwera@gmail.com\",\"phoneNumber\":\"0788112234\",\"location\":\"Kigali\"},{\"id\":\"bc6bd171-790d-4f67-8943-a9f57ff47b2d\",\"fullNames\":\"kalisa bella\",\"email\":\"kalisa@gmail.com\",\"phoneNumber\":\"0788112233\",\"location\":\"Kigali\"}]"))
+                        "{\"id\":\"b88c06c3-ae03-4deb-8724-9f74c51e0737\",\"fullNames\":\"uwera koko\",\"email\":\"uwera@gmail.com\",\"phoneNumber\":\"0788112234\",\"location\":\"Kigali\"}," +
+                        "{\"id\":\"bc6bd171-790d-4f67-8943-a9f57ff47b2d\",\"fullNames\":\"kalisa bella\",\"email\":\"kalisa@gmail.com\",\"phoneNumber\":\"0788112233\",\"location\":\"Kigali\"}]"))
                 .andReturn();
     }
 

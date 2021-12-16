@@ -56,6 +56,7 @@ public class EmployeeService {
     public Employee updateEmployee(UUID id, RegisterEmployee dto){
 
        Employee foundEmployee = employeeRepository.getById(id);
+
        if(foundEmployee!= null){
 
            foundEmployee.setFullNames(dto.getFullNames());
@@ -66,7 +67,5 @@ public class EmployeeService {
            return employeeRepository.save(foundEmployee);
        }
           throw new RuntimeException("Employee not found with id"+ id);
-//                .orElseThrow(()-> new RuntimeException("Employee not found with id"+ id));
-//        employee.setId(id);
     }
 }

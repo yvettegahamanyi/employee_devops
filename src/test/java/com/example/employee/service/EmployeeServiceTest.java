@@ -10,13 +10,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -43,7 +41,7 @@ public class EmployeeServiceTest {
 
     @Test(expected = RuntimeException.class)
     public void getOnebyid_notFound(){
-        doThrow(new RuntimeException()).when(employeeRepositoryMock).getOne(UUID.fromString("bc6bd171-790d-4f07-8943-a9f57ff47b2d"));
+        doThrow(new RuntimeException()).when(employeeRepositoryMock).findById((UUID.fromString("bc6bd171-790d-4f07-8943-a9f57ff47b2d")));
         employeeService.getById(UUID.fromString("bc6bd171-790d-4f07-8943-a9f57ff47b2d"));
     }
 
@@ -70,7 +68,7 @@ public class EmployeeServiceTest {
 
     @Test(expected = RuntimeException.class)
     public void updateEmployee_notfound(){
-        doThrow(new RuntimeException()).when(employeeRepositoryMock).getOne(UUID.fromString("bc6bd171-790d-4f07-8943-a9f57ff47b2d"));
+        doThrow(new RuntimeException()).when(employeeRepositoryMock).getById(UUID.fromString("bc6bd171-790d-4f07-8943-a9f57ff47b2d"));
         RegisterEmployee dto = new RegisterEmployee("kalisa bella","yg@gmail.com","0788112233","Kigali","kalisa");
         employeeService.updateEmployee(UUID.fromString("bc6bd171-790d-4f07-8943-a9f57ff47b2d"),dto);
     }
@@ -81,5 +79,11 @@ public class EmployeeServiceTest {
         when(employeeRepositoryMock.findById(employee.getId())).thenReturn(Optional.of(employee));
         employeeService.deleteEmployee(employee.getId());
         verify(employeeRepositoryMock).deleteById(employee.getId());
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void deleteEmployee_notFoun4d(){
+        doThrow(new RuntimeException()).when(employeeRepositoryMock).findById(UUID.fromString("bc6bd171-790d-4f07-8943-a9f57ff47b2d"));
+        employeeService.deleteEmployee(UUID.fromString("bc6bd171-790d-4f07-8943-a9f57ff47b2d"));
     }
 }

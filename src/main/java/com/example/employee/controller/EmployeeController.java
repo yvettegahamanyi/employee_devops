@@ -24,11 +24,14 @@ public class EmployeeController {
 
     @GetMapping("/employee/{id}")
     public ResponseEntity<?> getById(@PathVariable(name = "id") UUID id) {
-        Employee employee = employeeService.getById(id);
-        if (employee != null) {
+
+
+        try {
+            Employee employee = employeeService.getById(id);
             return ResponseEntity.ok(employee);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new APIResponse(false, "Employee not found"));
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new APIResponse(false, "Employee not found"));
     }
 
     @PostMapping("/add-employee")
@@ -46,9 +49,11 @@ public class EmployeeController {
     public ResponseEntity<?> updateEmployee(@RequestBody RegisterEmployee employee, @PathVariable(name = "id") UUID id){
         Employee updatedEmployee = employeeService.updateEmployee(id,employee);
         if (updatedEmployee != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(employee);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new APIResponse(false, "Employee not found"));
+
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new APIResponse(false, "Employee not found"));
+
+        return ResponseEntity.status(HttpStatus.OK).body(employee);
 
 //        return employeeService.createEmployee(employee);
     }
