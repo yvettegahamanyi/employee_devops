@@ -16,17 +16,12 @@ public class Department {
     @Type(type="uuid-char")
     private UUID id;
 
-    @Column(name = "title")
+    @Column(name = "title", unique = true)
     private String title;
 
-    @Column(name = "phone_number", unique = true)
+    @Column(name = "description")
     private String phoneNumber;
 
-
-    @Column(name = "location")
-    private String location;
-
-    @JsonIgnore
-    @Column(name = "password")
-    private String password;
+    @Column(name = "salary")
+    private String salary;
 }
